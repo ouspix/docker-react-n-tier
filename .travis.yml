@@ -18,7 +18,7 @@ after_success:
 
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
     
-- docker push ouspix/multi-client
-- docker push ouspix/multi-server
-- docker push ouspix/multi-worker
-- docker push ouspix/multi-nginx
+    - docker push ouspix/multi-client
+    - docker push ouspix/multi-server
+    - docker push ouspix/multi-worker
+    - docker push ouspix/multi-nginx
