@@ -17,8 +17,20 @@ after_success:
     - docker build -t ouspix/multi-nginx ./nginx
 
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-    
     - docker push ouspix/multi-client
     - docker push ouspix/multi-server
     - docker push ouspix/multi-worker
     - docker push ouspix/multi-nginx
+
+deploy:
+    edge: true
+    provider: elasticbeanstalk
+    region: "eu-west-3"
+    app: "docker-react-n-tier"
+    env: "DockerReactNTier-env"
+    bucket_name: "elasticbeanstalk-eu-west-3-202914226316"
+    bucket_path: "docker-react-n-tier"
+    on:
+        branch: master
+    acccess_key_id: "$AWS_ACCESS_KEY"
+    secret_access_key: "$AWS_SECRET_KEY"
