@@ -1,0 +1,22 @@
+sudo: required
+services:
+    - docker
+
+before_install:
+    - docker build -t ouspix/react-fibonacci -f ./client/Dockerfile.dev ./client
+
+script:
+    - docker run -e CI=true ouspix/react-fibonacci npm run test
+
+after_success:
+    - docker build -t ouspix/multi-client ./client
+    - docker build -t ouspix/multi-server ./server
+    - docker build -t ouspix/multi-worker ./worker
+    - docker build -t ouspix/multi-nginx ./nginx
+
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+    
+- docker push ouspix/multi-client
+- docker push ouspix/multi-server
+- docker push ouspix/multi-worker
+- docker push ouspix/multi-nginx
